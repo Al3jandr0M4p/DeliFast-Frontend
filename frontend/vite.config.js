@@ -32,13 +32,13 @@ export default defineConfig({
       }
     })
   ],
-  server: {
-    proxy: {
-      '/api': {
-        target: 'https://delifast.onrender.com',
-        changeOrigin: true,
-        secure: false
-      }
-    }
-  }
+  // server: {
+  //   proxy: {
+  //     '/api': {
+  //       target: 'https://delifast.onrender.com',
+  //       changeOrigin: true,
+  //       secure: false
+  //     }
+  //   }
+  // }
 })

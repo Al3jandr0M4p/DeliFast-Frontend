@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { Toaster, toast } from "sonner"
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google'
 
+const BASE_URL = import.meta.env.VITE_BASE_URL
+
 function Login() {
     const [formData, setFormData] = useState({
         username: '',
@@ -20,7 +22,7 @@ function Login() {
         e.preventDefault()
 
         try {
-            const response = await fetch("/api/login", {
+            const response = await fetch(`${BASE_URL}/api/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
