@@ -1,7 +1,6 @@
 import { Outlet, Link } from "react-router-dom"
 import { initFlowbite } from 'flowbite'
 
-import { Greeting } from "./greeting"
 import { useEffect } from "react"
 
 function User() {

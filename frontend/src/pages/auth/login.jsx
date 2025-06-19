@@ -55,6 +55,7 @@ function Login() {
         const savedUsername = localStorage.getItem("welcome_username")
         if (savedUsername) {
             setWelcomeUser(savedUsername)
+            localStorage.removeItem("welcome_username")
         }
     }, [])
 
@@ -113,7 +114,7 @@ function Login() {
                             value={formData.password}
                             onChange={handleChange}
                             autoComplete="new-password"
-                            placeholder="••••••••"
+                            placeholder="***"
                             className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-indigo-600 focus:border-indigo-600 block w-full p-2.5"
                         />
                     </div>
@@ -162,14 +163,12 @@ function Login() {
                                     const registerData = await registerRes.json()
 
                                     if (registerRes.ok) {
-                                        localStorage.setItem("welcome_username_google", registerData.user.username)
                                         toast.success(registerData.message)
                                         window.location.href = registerData.redirect
                                     } else {
                                         toast.error(registerData.message)
                                     }
                                 } else {
-                                    localStorage.setItem("welcome_username_google", data.user.username)
                                     window.location.href = data.redirect
                                 }
                             }}
