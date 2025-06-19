@@ -8,6 +8,7 @@ function Login() {
         password: ''
     })
     const [welcomeUser, setWelcomeUser] = useState("")
+    const [loading, setLoading] = useState(false)
 
     const handleChange = (e) => {
         setFormData({
@@ -18,6 +19,7 @@ function Login() {
 
     const handleOnSubmit = async (e) => {
         e.preventDefault()
+        setLoading(true)
 
         try {
             const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/login`, {
@@ -29,6 +31,7 @@ function Login() {
             })
 
             const data = await response.json()
+            setLoading(false)
 
             if (!response.ok) {
 
@@ -47,7 +50,9 @@ function Login() {
             }, 2000)
 
         } catch (err) {
+            setLoading(false)
             console.log(`ERROR ${err}`)
+            toast.error("Error en la conexion")
         }
     }
 
@@ -59,9 +64,38 @@ function Login() {
         }
     }, [])
 
+    const Loader = () => {
+        <div style={{
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            zIndex: 2000
+        }}>
+            <div style={{
+                border: '6px solid #f3f3f3',
+                borderTop: '6px solid #22c55e',
+                borderRadius: '50%',
+                width: 60,
+                height: 60,
+                animation: 'spin 1s linear infinite'
+            }} />
+            <style>{`
+                @keyframes spin {
+                0% { transform: rotate(0deg);}
+                100% { transform: rotate(360deg);}
+                }
+            `}</style>
+        </div>
+    }
+
     return (
         <section className="min-h-screen flex items-center justify-center px-4 py-8">
             <Toaster position="top-right" richColors closeButton />
+            {loading && <Loader />}
+
             <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-6 sm:p-8 space-y-6">
                 <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
                     {welcomeUser ? `Bienvenido de vuelta ${welcomeUser} 👋` : 'Bienvenido 👋'}
