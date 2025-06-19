@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react'
 import { Toaster, toast } from "sonner"
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google'
 
-const BASE_URL = import.meta.env.VITE_BASE_URL
-
 function Login() {
     const [formData, setFormData] = useState({
         username: '',
@@ -22,7 +20,7 @@ function Login() {
         e.preventDefault()
 
         try {
-            const response = await fetch(`${BASE_URL}/api/login`, {
+            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -130,7 +128,7 @@ function Login() {
                     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_APP_ID}>
                         <GoogleLogin
                             onSuccess={async credentialResponse => {
-                                const res = await fetch(`${BASE_URL}/api/google-login`, {
+                                const res = await fetch(`${import.meta.env.VITE_BASE_URL}/api/google-login`, {
                                     method: "POST",
                                     headers: {
                                         "Content-Type": "application/json"
@@ -150,7 +148,7 @@ function Login() {
                                         return
                                     }
 
-                                    const registerRes = await fetch(`${BASE_URL}/api/google-register`, {
+                                    const registerRes = await fetch(`${import.meta.env.VITE_BASE_URL}/api/google-register`, {
                                         method: "POST",
                                         headers: {
                                             "Content-Type": "application/json"

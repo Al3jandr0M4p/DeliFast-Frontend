@@ -3,8 +3,6 @@ import { Toaster, toast } from "sonner"
 
 import { CustomSelect } from "../../components/Select"
 
-const BASE_URL = import.meta.env.VITE_BASE_URL
-
 function Register() {
     const [formData, setFormData] = useState({
         email: '',
@@ -24,7 +22,7 @@ function Register() {
         e.preventDefault()
 
         try {
-            const response = await fetch(`${BASE_URL}/api/register`, {
+            const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/register`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
