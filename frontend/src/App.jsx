@@ -11,6 +11,9 @@ import ForgotPassword from './pages/auth/forgot'
 import User from './pages/user'
 import Shop from './pages/shop'
 
+// __general__
+import SignOut from './pages/auth/signOut'
+
 import './styles/OutPut.css'
 
 function App() {
@@ -29,6 +32,8 @@ function App() {
             <Route index element={<Shop />} />
             <Route path='perfil' element/>
           </Route>
+
+          <Route path='/signOut' element={<SignOut />} />
         </Routes>
       </BrowserRouter>
     </>
