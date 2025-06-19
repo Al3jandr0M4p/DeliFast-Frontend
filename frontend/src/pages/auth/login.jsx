@@ -130,7 +130,7 @@ function Login() {
                     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_APP_ID}>
                         <GoogleLogin
                             onSuccess={async credentialResponse => {
-                                const res = await fetch("/api/google-login", {
+                                const res = await fetch(`${BASE_URL}/api/google-login`, {
                                     method: "POST",
                                     headers: {
                                         "Content-Type": "application/json"
@@ -150,7 +150,7 @@ function Login() {
                                         return
                                     }
 
-                                    const registerRes = await fetch("/api/google-register", {
+                                    const registerRes = await fetch(`${BASE_URL}/api/google-register`, {
                                         method: "POST",
                                         headers: {
                                             "Content-Type": "application/json"
