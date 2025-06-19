@@ -1,17 +1,41 @@
 import { Outlet, Link } from "react-router-dom"
 import { initFlowbite } from 'flowbite'
 
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 
 function User() {
+    const sidebarRef = useRef(null)
+    const toggleBtnRef = useRef(null)
+
     useEffect(() => {
         initFlowbite()
+
+        function handleClickOutside(event) {
+            const sidebar = sidebarRef.current
+            const toggleBtn = toggleBtnRef.current
+
+            if (!sidebar || !toggleBtn) return
+            
+            if (
+               !sidebar.contains(event.target) &&
+            !toggleBtn.contains(event.target)
+            ) {
+                sidebar.classList.add('-translate-x-full')
+            }
+        }
+
+        document.addEventListener("click", handleClickOutside)
+
+        return () => {
+            document.removeEventListener('click', handleClickOutside)
+        }
     }, [])
 
     return (
         <>
             {/* boton del sidebar user */}
             <button
+                ref={toggleBtnRef}
                 data-drawer-target="cta-button-sidebar"
                 data-drawer-toggle="cta-button-sidebar"
                 aria-controls="cta-button-sidebar"
@@ -25,7 +49,7 @@ function User() {
             </button>
 
             {/* Sidebar */}
-            <aside id="cta-button-sidebar" className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
+            <aside id="cta-button-sidebar" className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar" ref={sidebarRef}>
                 <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50">
                     <h1 className="text-3xl font-medium tracking-tight mb-6">
                         DeliFast
