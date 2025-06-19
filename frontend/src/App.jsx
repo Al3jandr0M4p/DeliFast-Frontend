@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 
 // pages
 
@@ -16,11 +17,57 @@ import SignOut from './pages/auth/signOut'
 
 import './styles/OutPut.css'
 
-function App() {
+function InstallPrompt() {
+  const [deferredPrompt, setDeferredPrompt] = useState(null)
+  const [showBtn, setShowBtn] = useState(false)
 
+  useEffect(() => {
+    const handler = (e) => {
+      e.preventDefault()
+      setDeferredPrompt(e)
+      setShowBtn(true)
+    }
+
+    window.addEventListener('beforeinstallprompt', handler)
+
+    return () => window.removeEventListener('beforeinstallprompt', handler)
+  }, [])
+
+  const handleInstallClick = () => {
+    if (!deferredPrompt) return
+    deferredPrompt.prompt()
+    deferredPrompt.userChoice.then(() => {
+      setDeferredPrompt(null)
+      setShowBtn(false)
+    })
+  }
+
+  if (!showBtn) return null
+
+  return (
+    <button onClick={handleInstallClick} style={{
+      position: 'fixed',
+      bottom: 20,
+      right: 20,
+      zIndex: 1000,
+      padding: '10px 20px',
+      backgroundColor: '#22c55e',
+      color: 'white',
+      border: 'none',
+      borderRadius: 5,
+      cursor: 'pointer'
+    }}>
+      Instalar app
+    </button>
+  )
+}
+
+
+function App() {
   return (
     <>
       <BrowserRouter>
+        <InstallPrompt/>
         <Routes>
           <Route path='/' element={<Login />} />
           <Route path='/register' element={<Register />} />
