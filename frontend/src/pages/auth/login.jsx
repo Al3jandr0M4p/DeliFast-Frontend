@@ -65,30 +65,32 @@ function Login() {
     }, [])
 
     const Loader = () => {
-        <div style={{
-            position: 'fixed',
-            inset: 0,
-            backgroundColor: 'rgba(0,0,0,0.5)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            zIndex: 2000
-        }}>
+        return (
             <div style={{
-                border: '6px solid #f3f3f3',
-                borderTop: '6px solid #22c55e',
-                borderRadius: '50%',
-                width: 60,
-                height: 60,
-                animation: 'spin 1s linear infinite'
-            }} />
-            <style>{`
+                position: 'fixed',
+                inset: 0,
+                backgroundColor: 'rgba(0,0,0,0.5)',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                zIndex: 2000
+            }}>
+                <div style={{
+                    border: '6px solid #f3f3f3',
+                    borderTop: '6px solid #22c55e',
+                    borderRadius: '50%',
+                    width: 60,
+                    height: 60,
+                    animation: 'spin 1s linear infinite'
+                }} />
+                <style>{`
                 @keyframes spin {
                 0% { transform: rotate(0deg);}
                 100% { transform: rotate(360deg);}
                 }
             `}</style>
-        </div>
+            </div>
+        )
     }
 
     return (
