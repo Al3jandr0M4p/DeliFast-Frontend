@@ -1,5 +1,7 @@
 import { useState } from "react"
 import { Toaster, toast } from "sonner"
+import { useNavigate } from "react-router-dom"
+
 
 import { CustomSelect } from "../../components/Select"
 
@@ -10,6 +12,7 @@ function Register() {
         password: '',
         tipoCuenta: ''
     })
+    const navigate = useNavigate()
 
     const handleChange = (e) => {
         setFormData({
@@ -50,7 +53,7 @@ function Register() {
 
             toast.success(data.message || "Registro exitoso")
             setTimeout(() => {
-                window.location.href = data.redirect || "/"
+                navigate(data.redirect || "/")
             }, 1500)
         } catch (error) {
             console.log("ERROR al enviar formulario ", error)

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Toaster, toast } from "sonner"
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google'
+import { useNavigate } from 'react-router-dom'
 
 function Login() {
     const [formData, setFormData] = useState({
@@ -9,6 +10,7 @@ function Login() {
     })
     const [welcomeUser, setWelcomeUser] = useState("")
     const [loading, setLoading] = useState(false)
+    const navigate = useNavigate()
 
     const handleChange = (e) => {
         setFormData({
@@ -46,7 +48,7 @@ function Login() {
 
             toast.success(data.message || "Logueo exitoso")
             setTimeout(() => {
-                window.location.href = data.redirect
+                navigate(data.redirect)
             }, 2000)
 
         } catch (err) {
@@ -200,12 +202,12 @@ function Login() {
 
                                     if (registerRes.ok) {
                                         toast.success(registerData.message)
-                                        window.location.href = registerData.redirect
+                                        navigate(registerData.redirect)
                                     } else {
                                         toast.error(registerData.message)
                                     }
                                 } else {
-                                    window.location.href = data.redirect
+                                    navigate(data.redirect)
                                 }
                             }}
                             onError={() => {
