@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { useState, useEffect } from 'react'
+import { registerSW } from 'virtual:pwa-register'
 
 // pages
 
@@ -14,6 +15,9 @@ import Shop from './pages/shop'
 
 // __general__
 import SignOut from './pages/auth/signOut'
+
+// __components__
+import ModalInstall from './components/modalInstall'
 
 import './styles/OutPut.css'
 
@@ -46,77 +50,31 @@ function InstallPrompt() {
   )
 }
 
-function ModalInstall({ onInstall, onCancel }) {
-  return (
-    <>
-      {/* Fondo oscuro */}
-      <div style={{
-        position: 'fixed',
-        inset: 0,
-        backgroundColor: 'rgba(0,0,0,0.6)',
-        zIndex: 999,
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center'
-      }} />
-
-      {/* Modal centrado */}
-      <div style={{
-        position: 'fixed',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        backgroundColor: 'white',
-        padding: 30,
-        borderRadius: 10,
-        boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
-        zIndex: 1000,
-        maxWidth: 320,
-        width: '90%',
-        textAlign: 'center'
-      }}>
-        <h2>Instalar DeliFast</h2>
-        <p>¿Quieres instalar la app para acceder rápido desde tu dispositivo?</p>
-
-        <button
-          onClick={onInstall}
-          style={{
-            marginTop: 20,
-            backgroundColor: '#22c55e',
-            color: 'white',
-            border: 'none',
-            padding: '10px 25px',
-            borderRadius: 5,
-            cursor: 'pointer',
-            fontWeight: 'bold'
-          }}
-        >
-          Instalar
-        </button>
-
-        <button
-          onClick={onCancel}
-          style={{
-            marginTop: 10,
-            backgroundColor: 'transparent',
-            border: 'none',
-            color: '#555',
-            cursor: 'pointer',
-            textDecoration: 'underline',
-          }}
-        >
-          Cancelar
-        </button>
-      </div>
-    </>
-  )
-}
-
 function App() {
+  const [needRefresh, setNeedRefresh] = useState(false)
+  const [UpdateServiceWorker, setUpdateServiceWorker] = useState(() => () => { })
+
+  registerSW({
+    onNeedRefresh() {
+      console.log("Nueva versión disponible")
+      setNeedRefresh(true)
+    },
+    onOfflineReady() {
+      console.log("App lista para funcionar offline")
+    },
+    onRegisteredSW(swUrl, r) {
+      if (r && r.waiting) {
+        setNeedRefresh(true)
+        setUpdateServiceWorker(() => () => r.waiting.postMessage({
+          type: "SKIP_WAITING"
+        }))
+      }
+    }
+  })
   return (
     <>
       <BrowserRouter>
-        <InstallPrompt/>
+        <InstallPrompt />
         <Routes>
           <Route path='/' element={<Login />} />
           <Route path='/register' element={<Register />} />
@@ -126,11 +84,38 @@ function App() {
           <Route path="/user" element={<User />}>
             {/* rutas hijas */}
             <Route index element={<Shop />} />
-            <Route path='perfil' element/>
+            <Route path='perfil' element />
           </Route>
 
           <Route path='/signOut' element={<SignOut />} />
         </Routes>
+
+        {/* modal de nueva version disponible */}
+        {needRefresh && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white p-6 rounded-lg shadow-lg space-y-4 text-center max-w-sm mx-auto">
+              <h2 className="text-xl font-bold">Nueva versión disponible</h2>
+              <p className="text-gray-700">Actualiza la app para obtener las últimas mejoras y correcciones.</p>
+              <div className="flex justify-center gap-4">
+                <button
+                  className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400"
+                  onClick={() => setNeedRefresh(false)}
+                >
+                  Más tarde
+                </button>
+                <button
+                  className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+                  onClick={() => {
+                    UpdateServiceWorker()
+                    window.location.reload()
+                  }}
+                >
+                  Actualizar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </BrowserRouter>
     </>
   )
