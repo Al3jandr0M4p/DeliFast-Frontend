@@ -15,7 +15,10 @@ function ShowUbication() {
             )
                 .then((res) => res.json())
                 .then((data) => {
-                    setAddress(data.display_name);
+                    const addr = data.address;
+                    const calle = addr.road || addr.pedestrian || addr.street || "Calle desconocida";
+                    const barrio = addr.suburb || addr.neighbourhood || addr.village || "Barrio desconocido";
+                    setAddress(`${calle}, ${barrio}`);
                 })
                 .catch((err) => {
                     console.error("Error al obtener la direccion:", err);
