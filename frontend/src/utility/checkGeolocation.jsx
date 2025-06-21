@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
-function LocationWarning() {
+export function LocationWarning() {
     const [showWarning, setShowWarning] = useState(false)
     const intervalRef = useRef(null)
 
@@ -49,5 +49,3 @@ async function checkLocationPermission() {
         });
     }
 }
-
-export default LocationWarning

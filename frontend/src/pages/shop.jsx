@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { initFlowbite } from 'flowbite'
 
 
-import LocationWarning from '../utility/checkGeolocation'
+import { LocationWarning } from '../utility/checkGeolocation'
 import ShowUbication from '../utility/showUbication'
 
 function Shop() {
@@ -26,10 +26,10 @@ function Shop() {
                     {/* icono del carrito */}
                 </div>
 
-                <input 
-                    type="search" 
-                    name='searchShop' 
-                    placeholder='Busca en DeliFast' 
+                <input
+                    type="search"
+                    name='searchShop'
+                    placeholder='Busca en DeliFast'
                 />
             </header>
 
